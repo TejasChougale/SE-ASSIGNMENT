@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register Form to CSV</title>
+  <script>
+    // Function to convert form data to CSV and trigger download
+    function downloadCSV(event) {
+      event.preventDefault(); // Prevent form submission
+
+      // Get form data
+      const name = document.getElementById('name').value;
+      const mis = document.getElementById('mis').value;
+      const password = document.getElementById('password').value;
+
+      // Prepare CSV content
+      const csvContent = `Name,MIS,Password\n${name},${mis},${password}`;
+
+      // Create a Blob for the CSV file
+      const blob = new Blob([csvContent], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+
+      // Create a link to download the CSV file
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'registration_data.csv'; // Name of the downloaded file
+      a.click();
+
+      // Clean up by revoking the URL
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</head>
+<body>
+
+  <h1>Registration Form</h1>
+
+  <form id="registerForm" onsubmit="downloadCSV(event)">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required><br><br>
+
+    <label for="mis">MIS:</label>
+    <input type="text" id="mis" name="mis" required><br><br>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required><br><br>
+
+    <button type="submit">Submit</button>
+  </form>
+
+</body>
+</html>
